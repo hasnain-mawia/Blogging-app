@@ -198,7 +198,10 @@
 										<a class="dropdown-link-item" href="user-account-settings.html"> <i class="mdi mdi-settings"></i> <span class="nav-text">Account Setting</span> </a>
 									</li>
 									<li class="dropdown-footer">
-										<a class="dropdown-link-item" href="sign-in.html"> <i class="mdi mdi-logout"></i> Log Out </a>
+										<form id="logout-form" method="POST" action="{{route('logout')}}">
+										@csrf
+										<a id="logout-button" class="dropdown-link-item" href="javascript:void(0)"> <i class="mdi mdi-logout"></i> Log Out </a>
+										</form>
 									</li>
 								</ul>
 							</li>
@@ -1052,4 +1055,11 @@
 	<script src="{{asset('assets/auth/plugins/apexcharts/apexcharts.js')}}"></script>
 	<script src="{{asset('assets/auth/js/chart.js')}}"></script>
 	<script src="{{asset('assets/auth/js/map.js')}}"></script>
+	<script>
+	$(document).ready(function(){
+		$('#logout-button').click(function(){
+			$('#logout-form').submit();
+		});
+	});	
+	</script>
 @endsection
