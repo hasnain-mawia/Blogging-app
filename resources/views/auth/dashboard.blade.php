@@ -1,6 +1,5 @@
 @extends('layouts.auth');
 
-
 @section('styles')
 	<link href="{{asset('assets/auth/plugins/jvectormap/jquery-jvectormap-2.0.3.css')}}" rel="stylesheet" />
 @endsection
