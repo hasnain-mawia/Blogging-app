@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\DashboardController;
-use App\Http\Controllers\Auth\HomeController;
+use App\Http\Controllers\Auth\PostController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -12,7 +12,6 @@ Route::get('/logout', function () {
     auth()->logout();
     // return view('welcome');
 });
-// Route::view('/dashboard', 'auth.dashboard');
 
 Auth::routes([
     'register' => false
@@ -20,4 +19,4 @@ Auth::routes([
 
 Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('auth/posts', PostController::class);
