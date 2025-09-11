@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\Posts\CreateRequest;
 use App\Models\categories;
+use App\Models\posts;
 use App\Models\tags;
 use Illuminate\Http\Request;
 
@@ -37,17 +39,21 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-      $request->validate([
-        'title' => ['required','string','max:255'],
-        'description' => ['required','string','max:3000'],
-        'is_publish' => ['required', 'integer'],
-        'category' => ['required', 'integer'],
-        'tags' => ['required', 'array'],
-        'tags.*' => ['required', 'string'],
-      ]);  
-      return  $request->all();
+      $posts = posts::create([
+        'user_id' => auth()->id(), 
+        'title' => $request->title, 
+        'description' => $request->description, 
+        'status' => $request->status, 
+        'category_id' => $request->category, 
+        'tags' => $request->tags, 
+      ]);
+
+      foreach($request->tags as $tag){
+          $posts->tags()->attach($tag);  
+      }
+      return "Successfully Done";
     }
 
     /**

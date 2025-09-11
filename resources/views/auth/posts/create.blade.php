@@ -35,13 +35,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description </label>
-                        <textarea name="Description" id="" class="form-control" cols="30" rows="3" placeholder="Description"></textarea>
+                        <textarea name="description" id="" class="form-control" cols="30" rows="3" placeholder="Description"></textarea>
                     </div>
                     <div class="col-12">
                         <div class="row">
                             <div class="mb-3 col-6 sm-col-12">
                                 <label class="form-label">Is Publish</label>
-                                <select name="is_publish" id="" class="form-control">
+                                <select name="status" id="" class="form-control">
                                     <option value="" disabled selected>--- select ---</option>
                                     <option value="0">Draft</option>
                                     <option value="1">Publish</option>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="mb-3 col-6 sm-col-12">
                                 <label class="form-label">Category</label>
-                                <select name="categories" id="" class="form-control">
+                                <select name="category" id="" class="form-control">
                                     <option value="" disabled selected>Choose Options</option>
                                     @if(count($categories) > 0)
                                     @foreach ($categories as $category)
@@ -61,7 +61,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tags</label>
-                            <select name="tags" id="" class="form-control selectpicker" multiple data-live-search="true">
+                            <select name="tags[]" id="" class="form-control selectpicker" multiple data-live-search="true">
                                 @if(count($tags) > 0)
                                 @foreach ($tags as $tag)
                                 <option value="{{ $tag->id }}">{{ $tag->name }}</option>
