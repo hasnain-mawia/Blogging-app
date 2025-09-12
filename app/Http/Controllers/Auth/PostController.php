@@ -8,6 +8,7 @@ use App\Models\categories;
 use App\Models\posts;
 use App\Models\tags;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -41,18 +42,24 @@ class PostController extends Controller
      */
     public function store(CreateRequest $request)
     {
-      $posts = posts::create([
+        try{
+        DB::transaction(function() use($request){
+        $posts = posts::create([
         'user_id' => auth()->id(), 
         'title' => $request->title, 
         'description' => $request->description, 
         'status' => $request->status, 
         'category_id' => $request->category, 
-        'tags' => $request->tags, 
       ]);
 
       foreach($request->tags as $tag){
           $posts->tags()->attach($tag);  
       }
+      });
+    }catch(\Exception $ex){
+    
+        return back()->withErrors($ex->getMessage());
+    }
       return "Successfully Done";
     }
 
