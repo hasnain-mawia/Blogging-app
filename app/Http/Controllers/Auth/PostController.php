@@ -121,19 +121,29 @@ class PostController extends Controller
     public function update(UpdateRequest $request, posts $post)
     {
         if($request->file('file')){
-            dd('Yes');
-        }
-        else{
-            dd('NO');
-        }
+           $imageName = $post->gallery->image;
+           $imagePath = public_path('storage/auth/posts/');
+           if(file_exists($imagePath . $imageName)){
+               unlink($imagePath . $imageName);
+            }
 
-        $post->update([
+            $post->gallery->update([
+              'image' =>   
+            ]);
+            $post->update([
+            'gallery_id' =>,
             'user_id' => auth()->id(),
             'title' => $request->title,
             'description' => $request->description,
             'status' => $request->status,
             'category_id' => $request->category,
         ]);
+
+        }
+        else{
+            dd('NO');
+        }
+        
         foreach($request->tags as $tag){
           $post->tags()->attach($tag);  
         }
