@@ -57,10 +57,12 @@ class PostController extends Controller
     {
         try{
         
-            DB::transaction(function() use($request){
+        DB::transaction(function() use($request){
 
         if($file = $request->file('file')){
-           $gallery = $this->uploadFile($file);      
+           
+        $fileName = $this->uploadFile($file);      
+        $gallery = $this->storeImage($fileName);      
         }     
         $posts = posts::create([
         'gallery_id' => $gallery->id, 
@@ -120,18 +122,25 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, posts $post)
     {
-        if($request->file('file')){
-           $imageName = $post->gallery->image;
-           $imagePath = public_path('storage/auth/posts/');
-           if(file_exists($imagePath . $imageName)){
-               unlink($imagePath . $imageName);
+        if($file = $request->file('file')){
+            $imageName = null;
+            
+            if($post->gallery){
+            
+            $imageName = $post->gallery->image;
+            $imagePath = public_path('storage/auth/posts/');
+            
+            if(file_exists($imagePath . $imageName)){
+                unlink($imagePath . $imageName);
             }
+        }
+            $fileName = $this->uploadFile($file);    
 
             $post->gallery->update([
-              'image' =>   
+              'image' => $fileName,  
             ]);
-            $post->update([
-            'gallery_id' =>,
+        }
+        $post->update([
             'user_id' => auth()->id(),
             'title' => $request->title,
             'description' => $request->description,
@@ -139,19 +148,12 @@ class PostController extends Controller
             'category_id' => $request->category,
         ]);
 
-        }
-        else{
-            dd('NO');
-        }
-        
         foreach($request->tags as $tag){
           $post->tags()->attach($tag);  
         }
-
          $request->session()->flash('alert-success', 'Post Updated Successfully');
-         
          return to_route('posts.index');
-    }
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -170,10 +172,9 @@ class PostController extends Controller
     private function uploadFile($file){
         $fileName = rand(100, 1000).time().$file->getClientOriginalName();
         $filePath = public_path('/storage/auth/posts/');            
-        $gallery = $file->move($filePath, $fileName);
+        $file->move($filePath, $fileName);
         
-         $this->storeImage($fileName);   
-        return $gallery;
+        return $fileName;
         }
 
         private function storeImage($fileName){

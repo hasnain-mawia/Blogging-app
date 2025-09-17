@@ -45,7 +45,7 @@
 			<div id="sidebar" class="sidebar sidebar-with-footer">
 				<!-- Aplication Brand -->
 				<div class="app-brand">
-					<a href="{{url('/dashboard')}}"> <img src="{{asset('assets/auth/images/logo.png')}}" alt="Mono"> <span class="brand-name">MONO</span> </a>
+					<a href="{{url('/dashboard')}}"> <img src="{{asset('assets/auth/images/logo.png')}}" alt="Mono"> <span class="brand-name">Auth Dashboard</span> </a>
 				</div>
 				<!-- begin sidebar scrollbar -->
 				<div class="sidebar-left" data-simplebar style="height: 100%;">
